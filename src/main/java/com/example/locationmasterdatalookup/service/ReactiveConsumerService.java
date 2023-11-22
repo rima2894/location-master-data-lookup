@@ -1,11 +1,7 @@
 package com.example.locationmasterdatalookup.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -25,7 +21,7 @@ public class ReactiveConsumerService{
         this.reactiveKafkaConsumerTemplate = reactiveKafkaConsumerTemplate;
     }
 
-    @EventListener(ApplicationStartedEvent.class)
+    //@EventListener(ApplicationStartedEvent.class)
     private Flux<Void> consumeLocationData() {
         return reactiveKafkaConsumerTemplate
                 .receiveAutoAck()
