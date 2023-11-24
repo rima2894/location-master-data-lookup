@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface LocationRepository extends R2dbcRepository<Location, Integer>{
 
     @Query("INSERT INTO location (id, data) VALUES (:id, CAST(:data AS jsonb))")
-    Mono<Void> saveValues(@Param("id") UUID id, @Param("data") String data);
+    Mono<Void>  saveValues(@Param("id") UUID id, @Param("data") String data);
 
     @Query(value = "SELECT * FROM location WHERE data->>'name' LIKE '%'||$1||'%'")
     Flux<Location> findByName(String name);

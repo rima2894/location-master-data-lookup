@@ -12,17 +12,18 @@ import java.time.Duration;
 @Service
 public class ReactiveConsumerService{
 
-    private final ReactiveKafkaConsumerTemplate<String, String> reactiveKafkaConsumerTemplate;
+    @Autowired
+    private ReactiveKafkaConsumerTemplate<String, String> reactiveKafkaConsumerTemplate;
 
     @Autowired
     private LocationService locationService;
 
-    public ReactiveConsumerService(ReactiveKafkaConsumerTemplate<String, String> reactiveKafkaConsumerTemplate) {
+   /* public ReactiveConsumerService(ReactiveKafkaConsumerTemplate<String, String> reactiveKafkaConsumerTemplate) {
         this.reactiveKafkaConsumerTemplate = reactiveKafkaConsumerTemplate;
-    }
+    }*/
 
     //@EventListener(ApplicationStartedEvent.class)
-    private Flux<Void> consumeLocationData() {
+    protected Flux<Void> consumeLocationData() {
         return reactiveKafkaConsumerTemplate
                 .receiveAutoAck()
                 .delayElements(Duration.ofSeconds(2L)) // BACKPRESSURE

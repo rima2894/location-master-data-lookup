@@ -15,9 +15,8 @@ public class Controller {
 	private LocationService locationService;
 
 	@PostMapping("/loadJson")
-	public  Mono<Void> loadJson(@RequestBody String message)
-	{
-		 return locationService.saveLocation(message);
+	public  Mono<Void> loadJson(@RequestBody String message) {
+		return locationService.saveLocation(message);
 	}
 
 	@GetMapping("/byName/{name}")
