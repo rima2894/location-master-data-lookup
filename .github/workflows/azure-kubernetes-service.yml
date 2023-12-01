@@ -36,7 +36,7 @@ on:
 
 env:
   AZURE_CONTAINER_REGISTRY: "locationpocacr"
-  CONTAINER_NAME: "consumer"
+  CONTAINER_NAME: "location-master-data-lookup"
   RESOURCE_GROUP: "locationpoc_rg"
   CLUSTER_NAME: "locationpoc_aks"
   DEPLOYMENT_MANIFEST_PATH: "./deployment.yml"

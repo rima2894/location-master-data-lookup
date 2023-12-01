@@ -8,7 +8,7 @@ RUN mvn clean package -DskipTests=true
 #Package
 FROM openjdk:17-alpine
 
-copy --from=build /home/app/target/location-master-data-lookup-0.0.1-SNAPSHOT.jar /usr/local/lib/consumer.jar
+copy --from=build /home/app/target/location-master-data-lookup-0.0.1-SNAPSHOT.jar /usr/local/lib/location-master-data-lookup.jar
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","/usr/local/lib/consumer.jar"]
+ENTRYPOINT ["java","-jar","/usr/local/lib/location-master-data-lookup.jar"]
