@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: consumer
+  name: location-master-data-lookup
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: consumer
+      app: location-master-data-lookup
   template:
     metadata:
       labels:
-        app: consumer
+        app: location-master-data-lookup
     spec:
       containers:
-        - name: consumer
-          image: locationpocacr.azurecr.io/consumer:v1
+        - name: location-master-data-lookup
+          image: locationpocacr.azurecr.io/location-master-data-lookup:v1
           ports:
             - containerPort: 8082
 ---
