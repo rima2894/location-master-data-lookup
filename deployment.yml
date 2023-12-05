@@ -16,7 +16,7 @@ spec:
         - name: location-master-data-lookup
           image: locationpocacr.azurecr.io/location-master-data-lookup:v1
           ports:
-            - containerPort: 8082
+            - containerPort: 8085
 ---
 apiVersion: v1
 kind: Service
@@ -28,5 +28,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8082
+      targetPort: 8085
   type: LoadBalancer
