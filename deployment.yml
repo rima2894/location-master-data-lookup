@@ -18,19 +18,15 @@ spec:
           ports:
             - containerPort: 8082
 ---
-#kind: Service
-#apiVersion: v1
-#metadata:
-  # Name of our service
-  #name: cloud-poc-service-producer
-#spec:
-  # LoadBalancer type to allow external access to multiple ports
-  #type: LoadBalancer
-  #selector:
-    # Will deliver external traffic to the pod holding each of our containers
-    #app: consumer
-  #ports:
-    #- name: sentiment
-      #protocol: TCP
-     #- port: 8082
-      #targetPort: containerport
+apiVersion: v1
+kind: Service
+metadata:
+  name: location-master-data-lookup-service
+spec:
+  selector:
+    app: location-master-data-lookup
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8082
+  type: LoadBalancer
