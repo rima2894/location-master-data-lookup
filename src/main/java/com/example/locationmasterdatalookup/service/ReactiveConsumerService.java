@@ -2,6 +2,8 @@ package com.example.locationmasterdatalookup.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -18,11 +20,11 @@ public class ReactiveConsumerService{
     @Autowired
     private LocationService locationService;
 
-   /* public ReactiveConsumerService(ReactiveKafkaConsumerTemplate<String, String> reactiveKafkaConsumerTemplate) {
+    public ReactiveConsumerService(ReactiveKafkaConsumerTemplate<String, String> reactiveKafkaConsumerTemplate) {
         this.reactiveKafkaConsumerTemplate = reactiveKafkaConsumerTemplate;
-    }*/
+    }
 
-    //@EventListener(ApplicationStartedEvent.class)
+    @EventListener(ApplicationStartedEvent.class)
     protected Flux<Void> consumeLocationData() {
         return reactiveKafkaConsumerTemplate
                 .receiveAutoAck()
@@ -35,7 +37,8 @@ public class ReactiveConsumerService{
                 )
                 .flatMap(consumerRecord -> locationService.saveLocation(consumerRecord.value()))
                 .doOnNext(obj -> log.info("successfully consumed {}={}", String.class.getSimpleName(), obj))
-                .doOnError(throwable -> log.error("error while consuming : {}", throwable.getMessage()));
+                .doOnError(throwable -> log.error("error while consuming : {}", throwable.getMessage()))
+                .doFinally(t->log.info("In Finally"));
     }
 
 }
