@@ -27,7 +27,7 @@ public class ReactiveConsumerService{
     @EventListener(ApplicationStartedEvent.class)
     protected Flux<Void> consumeLocationData() {
         return reactiveKafkaConsumerTemplate
-                .receiveAutoAck()
+                .receive()
                 .delayElements(Duration.ofSeconds(2L)) // BACKPRESSURE
                 .doOnNext(consumerRecord -> log.info("received key={}, value={} from topic={}, offset={}",
                         consumerRecord.key(),
@@ -35,9 +35,14 @@ public class ReactiveConsumerService{
                         consumerRecord.topic(),
                         consumerRecord.offset())
                 )
-                .flatMap(consumerRecord -> locationService.saveLocation(consumerRecord.value()))
-                .doOnNext(obj -> log.info("successfully consumed {}={}", String.class.getSimpleName(), obj))
-                .doOnError(throwable -> log.error("error while consuming : {}", throwable.getMessage()))
+                .flatMap(consumerRecord -> locationService.saveLocation(consumerRecord.value())
+                        .doOnSuccess(location -> {
+                            log.info("successfully consumed {}", consumerRecord.value());
+                            consumerRecord.receiverOffset().acknowledge();
+                        })
+                        .doOnError(throwable -> log.error("DB error while consuming : {}", throwable.getMessage()))
+                )
+                .doOnError(throwable -> log.error("Kafka error while consuming : {}", throwable.getMessage()))
                 .doFinally(t->log.info("In Finally"));
     }
 
