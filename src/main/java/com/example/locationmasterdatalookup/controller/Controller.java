@@ -3,6 +3,7 @@ package com.example.locationmasterdatalookup.controller;
 import com.example.locationmasterdatalookup.dto.Location;
 import com.example.locationmasterdatalookup.exception.BadRequestException;
 import com.example.locationmasterdatalookup.service.LocationService;
+import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -13,6 +14,9 @@ import reactor.core.publisher.Mono;
 public class Controller {
 	@Autowired
 	private LocationService locationService;
+
+	@Autowired
+	private DatabaseClient databaseClient;
 
 	@GetMapping("/hello")
 	public  String hello() {
