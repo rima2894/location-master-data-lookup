@@ -19,6 +19,16 @@ public class Controller {
 		return "Hello from OpenShift!";
 	}
 
+	@GetMapping("/db-check")
+	public Mono<String> checkDb() {
+		return databaseClient
+				.sql("SELECT 1")
+				.fetch()
+				.first()
+				.map(row -> "DB connection successful: " + row)
+				.onErrorResume(e -> Mono.just("DB connection failed: " + e.getMessage()));
+	}
+
 	@PostMapping("/loadJson")
 	public  Mono<Void> loadJson(@RequestBody String message) {
 		return locationService.saveLocation(message);
