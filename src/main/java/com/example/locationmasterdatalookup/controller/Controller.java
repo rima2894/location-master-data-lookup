@@ -14,6 +14,11 @@ public class Controller {
 	@Autowired
 	private LocationService locationService;
 
+	@GetMapping("/hello")
+	public  String hello() {
+		return "Hello from OpenShift!";
+	}
+
 	@PostMapping("/loadJson")
 	public  Mono<Void> loadJson(@RequestBody String message) {
 		return locationService.saveLocation(message);
