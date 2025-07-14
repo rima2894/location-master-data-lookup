@@ -33,6 +33,17 @@ public class Controller {
 				.onErrorResume(e -> Mono.just("DB connection failed: " + e.getMessage()));
 	}
 
+	@GetMapping("/vector-check")
+	public Mono<String> checkVector() {
+		return databaseClient
+				.sql("SELECT extname FROM pg_extension WHERE extname = 'vector'")
+				.fetch()
+				.first()
+				.map(row -> "Vector extension found: " + row.get("extname"))
+				.switchIfEmpty(Mono.just("Vector extension NOT found"))
+				.onErrorResume(e -> Mono.just("DB error: " + e.getMessage()));
+	}
+
 	@PostMapping("/loadJson")
 	public  Mono<Void> loadJson(@RequestBody String message) {
 		return locationService.saveLocation(message);
